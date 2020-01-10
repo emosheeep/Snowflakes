@@ -3,141 +3,21 @@
 	<head>
 		<meta charset="utf-8">
 		<title>雪花</title>
+		<link rel="stylesheet" type="text/css" href="./css/main.css"/>
 	</head>
-	<style type="text/css">
-		html, body {
-			width: 100%;
-			height: 100%;
-			padding: 0;
-			margin: 0;
-			background: rgb(119, 13, 13);
-			background: radial-gradient(
-				circle,
-				rgba(119, 13, 13, 0.92) 64%,
-				rgba(0, 0, 0, 0.6) 100%
-			);
-			overflow: hidden;
-		}
-		canvas {
-			position: absolute;
-			z-index: 9999;
-			width: 100%;
-			height: 100%;
-		}
-		.middle {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			text-align: center;
-			font-size: 3em;
-			user-select: none;
-			background: url("img/bg.png");
-			-webkit-background-clip: text;
-			color: transparent;
-			animation: moveBg 15s linear infinite;
-		}
-		@keyframes moveBg{
-			from{
-				background-position: 0% 30%;
-			}
-			to{
-				background-position: 1000% 500%;
-			}
-		}
-	</style>
 	<body>
-		<h1 class="middle">新年快乐</h1>
+		<div id="snow">
+			<h1 class="middle">新年快乐</h1>
+		</div>
 	</body>
+	<script src="./js/snow.js"></script>
 	<script>
-		// 控制每一片雪花的速度和轨迹等属性
-		class Snowflake {
-			constructor() {
-				this.reLoad()
-			}
-			center () {
-				let x = this.x + this.scale / 2
-				let y = this.y + this.scale / 2
-				return {x, y}
-			}
-			reLoad () {
-				this.x = this.randBetween(0, window.innerWidth)
-				this.y = this.randBetween(0, -window.innerHeight)
-				this.deg = 0
-				
-				this.vd = Math.PI / this.randBetween(45, 360) // 角速度
-				this.vd = Math.random() >= 0.5 ? this.vd : -this.vd // 旋转方向
-				
-				this.vx = this.randBetween(-3, 3)
-				this.vy = this.randBetween(2, 5)
-				this.alpha = this.randBetween(0.1, 0.9) // 透明度
-				this.scale = this.randBetween(10, 70) // 大小
-			}
-			randBetween(min, max) {
-				return min + Math.random() * (max - min)
-			}
-			update() {
-				this.x += this.vx
-				this.y += this.vy
-				this.deg += this.vd
-				
-				if (this.y > window.innerHeight) {
-					this.reLoad()
-				}
-			}
-		}
-		// 负责创建雪花，重绘画面
-		class Snow {
-			constructor(arg) {
-				this.canvas = document.createElement('canvas')
-				this.ctx = this.canvas.getContext('2d')
-				document.body.appendChild(this.canvas)
-				
-				window.addEventListener('resize', () => this.onResize())
-				this.onResize()
-				this.createSnowflakes()
-				
-				this.img = new Image()
-				this.img.src = './img/snow.png'
-				this.img.onload = () => {
-					requestAnimationFrame(this.animationLoop.bind(this))
-				}
-			}
-			onResize () {
-				this.width = window.innerWidth
-				this.height = window.innerHeight
-				this.canvas.width = this.width
-				this.canvas.height = this.height
-			}
-			createSnowflakes() {
-				const flakes = window.innerWidth / 3
-				this.snowflakes = []
-				
-				for (let s = 0; s < flakes; s++) {
-					this.snowflakes.push(new Snowflake())
-				}
-			}
-			// 每一帧
-			createAFrame() {
-			  this.ctx.clearRect(0, 0, this.width, this.height)
-			  for (let flake of this.snowflakes) {
-			    flake.update()
-				let {x, y} = flake.center()
-				
-				this.ctx.save()
-				this.ctx.translate(x, y)
-				this.ctx.rotate(flake.deg)
-				this.ctx.translate(-x, -y)
-				this.ctx.globalAlpha = flake.alpha
-				this.ctx.drawImage(this.img, flake.x, flake.y, flake.scale, flake.scale)
-				this.ctx.restore()
-			  }
-			}
-			animationLoop () {
-				this.createAFrame()
-				requestAnimationFrame(this.animationLoop.bind(this))
-			}
-		}
-		new Snow()
+		new Snow('#snow', {
+		    image: './img/snow.png',
+		    snowflakes: {
+		        radius: [10, 60],
+				va: [45, 180]
+		    }
+		})
 	</script>
 </html>
