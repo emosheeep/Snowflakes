@@ -1,5 +1,5 @@
 # Snowflakes
-自制雪花飞舞玻璃窗效果，效果逼真
+自制雪花飞舞玻璃窗，效果逼真
 
 主要使用```canvas```绘图，通过```window.requestAnimationFrame```实现刷新
 （类似于```setTimeout```和```setInterval```）
