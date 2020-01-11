@@ -18,22 +18,31 @@ class Snowflake {
         return {x, y}
     }
     load () {
+        // 绘图属性
+        let {color} = this.config
+        this.color = color[random(0, color.length, true)]
         this.x = random(0, window.innerWidth)
         this.y = random(-window.innerHeight, 0)
+        this.alpha = random(...this.config.alpha) // 透明度
+        this.radius = random(...this.config.radius) // 大小
         this.angle = 0
+        this.flip = 0
+        // 变换属性
         this.va = Math.PI / random(...this.config.va) // 角速度
         this.va = Math.random() >= 0.5 ?  this.va : -this.va // 旋转方向
         this.vx = random(...this.config.vx)
         this.vy = random(...this.config.vy)
-        this.alpha = random(...this.config.alpha) // 透明度
-        this.radius = random(...this.config.radius) // 大小
-        let {color} = this.config
-        this.color = color[random(0, color.length, true)]
+        !!this.config.vFlip && (this.vf = random(0, this.config.vFlip)) // 翻转速度
     }
     update(range) {
         this.x += this.vx
         this.y += this.vy
         this.angle += this.va
+        this.flip += this.vf
+
+        if (this.flip > 1 || this.flip < 0) {
+            this.vf = -this.vf
+        }
 
         if (this.y >= range + this.radius ) {
             this.load()
@@ -47,12 +56,13 @@ class Snow {
             image: config.image || '',
             num: config.num || window.innerWidth / 2,
             snowflakes: Object.assign({
-                color: config.color || ['white'],
+                color: ['white'],
                 vx: [-3, 3],
                 vy: [2, 5],
                 va: [45, 180],
+                vFlip: 0,
                 radius: [5, 15],
-                alpha: [0.1, 0.9]
+                alpha: [0.1, 0.9],
             }, config.snowflakes)
         }
         this.init(container)
@@ -81,20 +91,27 @@ class Snow {
             requestAnimationFrame(this.drawCircle())
         }
     }
+    transform (flake) {
+        flake.update(this.canvas.height)
+        let {x, y} = flake.center()
+        this.ctx.translate(x, y)
+        this.ctx.rotate(flake.angle)
+        this.ctx.scale(1, flake.flip)
+        this.ctx.translate(-x, -y)
+    }
     // 返回一个帧动画函数
     drawCircle () {
         // 利用箭头函数绑定this
         let frame = () => {
-            let {color} = this.config
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             for (let flake of this.snowflakes) {
-                flake.update(this.canvas.height)
                 this.ctx.save()
-                this.ctx.globalAlpha = flake.alpha
-                this.ctx.fillStyle = flake.color
+                this.transform(flake)
                 this.ctx.beginPath()
                 this.ctx.arc(flake.x, flake.y, flake.radius,0,2*Math.PI)
                 this.ctx.closePath()
+                this.ctx.globalAlpha = flake.alpha
+                this.ctx.fillStyle = flake.color
                 this.ctx.fill()
                 this.ctx.restore()
             }
@@ -106,12 +123,8 @@ class Snow {
         let frame = () => {
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             for (let flake of this.snowflakes) {
-                flake.update(this.canvas.height)
-                let {x, y} = flake.center()
                 this.ctx.save()
-                this.ctx.translate(x, y)
-                this.ctx.rotate(flake.angle)
-                this.ctx.translate(-x, -y)
+                this.transform(flake)
                 this.ctx.globalAlpha = flake.alpha
                 this.ctx.drawImage(this.img, flake.x, flake.y, flake.radius, flake.radius)
                 this.ctx.restore()
