@@ -57,9 +57,7 @@ new Snow('#snow', {
 ```
 new Snow('#snow', {
     image: ['./snow.png'],
-    snowflakes: {
-        radius: [10, 80]
-    }
+    radius: [10, 80]
 })
 ```
 
