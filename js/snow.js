@@ -117,7 +117,7 @@ class Snow {
         let {x, y} = flake.center();
         this.ctx.translate(x, y);
         this.ctx.rotate(flake.angle);
-        flake.vFlip && this.ctx.scale(1, flake.flip);
+        !!flake.vFlip && this.ctx.scale(1, flake.flip);
         this.ctx.translate(-x, -y)
     }
     // 返回一个帧动画函数
