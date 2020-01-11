@@ -41,5 +41,13 @@ new Snow('#snow', {
 })
 ```
 
-# GIF
+# GIF示例
+```
+new Snow('#snow', {
+    image: './snow.png',
+    snowflakes: {
+        radius: [10, 80]
+    }
+})
+```
 ![GIF示例](./Snowflakes.gif)
