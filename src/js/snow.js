@@ -2,8 +2,8 @@ const random = function (min, max, floor = false) {
     if (max < min) {
         throw new Error(`min is ${min}, max is ${max}, max should bigger than min!`)
     } else if (floor) {
-		return Math.floor(min + Math.random() * (max - min))
-	} else {
+        return Math.floor(min + Math.random() * (max - min))
+    } else {
         return min + Math.random() * (max - min)
     }
 }
@@ -27,8 +27,8 @@ class Snowflake {
         this.vy = random(...this.config.vy)
         this.alpha = random(...this.config.alpha) // 透明度
         this.radius = random(...this.config.radius) // 大小
-		let {color} = this.config
-		this.color = color[random(0, color.length, true)]
+        let {color} = this.config
+        this.color = color[random(0, color.length, true)]
     }
     update(range) {
         this.x += this.vx
@@ -85,7 +85,7 @@ class Snow {
     drawCircle () {
         // 利用箭头函数绑定this
         let frame = () => {
-			let {color} = this.config
+            let {color} = this.config
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
             for (let flake of this.snowflakes) {
                 flake.update(this.canvas.height)
@@ -121,3 +121,5 @@ class Snow {
         return frame
     }
 }
+
+export default Snow

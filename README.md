@@ -15,19 +15,33 @@ Snow类负责创建和调配雪花，将其绘制在画布上。创建动画帧�
 
 做动画还是需要很多物理知识呀，共勉。
 
+# 运行
+```
+// 安装依赖
+npm install
+
+// 运行服务
+npm run dev
+```
+
 # 引入snow.js自定义飞舞效果
-JS----snow.js可以引入到项目中，通过一点简单的配置即可快速实现雪花飞舞的效果，具体如下：
+JS----snow.js可以引入到项目中，通过一点简单的配置即可快速实现雪花飞舞的效果。
+该分支引入方式略有不同，采用ES6的方式：
 
 ### 快速使用
 ``` bash
+// 引入文件
+import Snow from './src/js/snow.js'
 // 传入id，默认配置下，雪花为大小、透明度不一的白色圆点
 new Snow('#snow')
 ```
 ### 内置默认配置
 ``` bash
+// 引入文件
+import Snow from './src/js/snow.js'
 // 配置相应项即可，不配置则应用默认配置
 new Snow('#snow', {
-	image: '',                    // 可选的雪花图片，将绘制图片内容
+    image: '',                    // 可选的雪花图片，将绘制图片内容
     num: window.innerWidth / 2,   // 雪花数量，一般无需改动
     // 每片雪花的属性
     snowflakes: {
@@ -41,5 +55,14 @@ new Snow('#snow', {
 })
 ```
 
-# GIF
+# GIF示例
+```
+new Snow('#snow', {
+    image: './snow.png',
+    snowflakes: {
+        radius: [10, 80]
+    }
+})
+```
+
 ![GIF示例](./Snowflakes.gif)
