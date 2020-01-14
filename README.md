@@ -31,14 +31,14 @@ JS----snow.js可以引入到项目中，通过一点简单的配置即可快速�
 ### 快速使用
 ``` bash
 // 引入文件
-import Snow from './src/js/snow.js'
+import Snow from './src/js/snow.ts'
 // 传入id，默认配置下，雪花为大小、透明度不一的白色圆点
 new Snow('#snow')
 ```
 ### 内置默认配置
 ``` bash
 // 引入文件
-import Snow from './src/js/snow.js'
+import Snow from './src/js/snow.ts'
 // 配置相应项即可，不配置则应用默认配置
 new Snow('#snow', {
     image: [],                    // 可选的图片(网络或本地)

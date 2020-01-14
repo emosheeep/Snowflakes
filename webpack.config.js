@@ -1,3 +1,4 @@
+/*eslint-disable*/
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -9,7 +10,7 @@ function resolve (dir) {
 
 module.exports = {
     entry: {
-        main: './src/js/main.js'
+        main: './src/ts/main.ts'
     },
     output: {
         filename: '[name].js',
@@ -18,9 +19,18 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
-                use: ['babel-loader'],
-                include: resolve('./src/js')
+                test: /\.ts$/,
+                loader: 'awesome-typescript-loader',
+                include: resolve('src'),
+            },
+            {
+                test: /\.ts$/,
+                loader: 'eslint-loader',
+                enforce: "pre",
+                include: resolve('src'),
+                options: {
+                    formatter: require('eslint-friendly-formatter')
+                }
             },
             {
                 test: /\.css$/,
@@ -36,6 +46,9 @@ module.exports = {
                 }
             }
         ]
+    },
+    resolve: {
+        extensions: ['.ts', '.js']
     },
     plugins: [
         new CleanWebpackPlugin(),
