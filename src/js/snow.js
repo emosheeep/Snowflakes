@@ -34,7 +34,7 @@ class Snowflake {
         this.va = Math.random() >= 0.5 ?  this.va : -this.va; // 旋转方向
         this.vx = random(...this.config.vx);
         this.vy = random(...this.config.vy);
-        !!this.config.vFlip && (this.vf = random(0, this.config.vFlip)) // 翻转速度
+        !!this.config.vf && (this.vf = random(0, this.config.vf)) // 翻转速度
     }
     update(range) {
         this.x += this.vx;
@@ -61,7 +61,7 @@ class Snow {
             vx: [-3, 3],
             vy: [2, 5],
             va: [45, 180],
-            vFlip: 0,
+            vf: 0,
             radius: [5, 15],
             alpha: [0.1, 0.9],
             image: []
@@ -117,7 +117,7 @@ class Snow {
         let {x, y} = flake.center();
         this.ctx.translate(x, y);
         this.ctx.rotate(flake.angle);
-        !!flake.vFlip && this.ctx.scale(1, flake.flip);
+        !!flake.vf && this.ctx.scale(1, flake.flip);
         this.ctx.translate(-x, -y)
     }
     // 返回一个帧动画函数
