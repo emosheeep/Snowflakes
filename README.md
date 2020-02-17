@@ -22,6 +22,9 @@ npm install
 
 // 运行服务
 npm run dev
+
+// 构建生产环境代码
+npm run build
 ```
 
 # 引入snow.js自定义飞舞效果

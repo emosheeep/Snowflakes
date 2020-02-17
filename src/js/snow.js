@@ -54,7 +54,7 @@ class Snowflake {
 class Snow {
     constructor(container, config = {}) {
         let {num} = config;
-        this.num = num || window.innerWidth / 2;
+        this.num = num || window.innerWidth / 3;
         delete config['num'];
         this.config = Object.assign({
             color: ['white'],
